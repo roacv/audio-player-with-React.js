@@ -22,9 +22,11 @@ function Home() {
 
 	const  setSong = (link , i) => {
 		audioPlayer.current.src = `https://assets.breatheco.de/apis/sound/${link}`
-		audioPlayer.current.play();
+		audioPlayer.current.play();		
 		setMusic(i)
-		changePlaying()
+		if (!isPlaying){
+			changePlaying()	
+		}
 	}
  
   	const changePlaying =()=> {
@@ -38,19 +40,29 @@ function Home() {
 	}
   
 	const nextMusica = () => {
+		let id=music;
 		if (music < list.length -1 ) {
 			setMusic(music+1);
-		} else { setMusic(0);}
-		audioPlayer.current.src = `https://assets.breatheco.de/apis/sound/${list[music].url}`
+			id++
+		} else { 
+			setMusic(0);
+			id=0
+		}
+		audioPlayer.current.src = `https://assets.breatheco.de/apis/sound/${list[id].url}`
 		audioPlayer.current.play();
 	  }
 	 
 	const anteriorMusica = () => {
+		let id=music
 		if (music > 0) {
 			setMusic(music-1);
-		}else { setMusic(list.length -1 );}
-			audioPlayer.current.src = `https://assets.breatheco.de/apis/sound/${list[music].url}`
-			audioPlayer.current.play();
+			id--
+		}else { 
+			setMusic(list.length-1);
+			id=list.length-1;
+		}
+		audioPlayer.current.src = `https://assets.breatheco.de/apis/sound/${list[id].url}`
+		audioPlayer.current.play();
 	}
  
  return (
@@ -58,7 +70,7 @@ function Home() {
 		<div className="container">
 			<div className="listsongs mx-auto">
 				<ol className="list-group list-group-numbered overflow-auto"> {list.map((item, index) => (
-					<li key={index} value={index} className="list-group-item p-3 text-start" onClick={()=>setSong(item.url,index)}>{item.name}</li>
+					<li key={index} value={index} className={"list-group-item p-3 text-start"} onClick={()=>setSong(item.url,index)}>{item.name}</li>
 				))}  </ol>
 				<audio  ref={audioPlayer} src="https://assets.breatheco.de/apis/sound/songs" type="audio.mp3"/>
 				<div className="controls mx-auto text-center ">
