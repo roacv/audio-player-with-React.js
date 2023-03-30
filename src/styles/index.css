@@ -10,3 +10,25 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+.listsongs{
+    width: 500px;
+    height: 500px;
+    padding-top: 2%;
+    background-color: darkgray;
+}
+.list-group{
+    height: 500px;
+}
+.list-group-item {
+    background-color: black;
+    color: white;
+}
+.list-group-item:hover{
+    background-color: gray;
+}
+.controls{
+    background-color: darkgray;
+}
+.btn{
+    font-size: 28px;
+}
