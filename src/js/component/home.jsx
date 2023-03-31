@@ -25,11 +25,11 @@ function Home() {
 		audioPlayer.current.play();		
 		setMusic(i)
 		if (!isPlaying){
-			changePlaying()	
+			play()	
 		}
 	}
  
-  	const changePlaying =()=> {
+  	const play =()=> {
 		const prevValue = isPlaying
 		setIsPlaying(!prevValue);
 		if (!prevValue){
@@ -39,8 +39,11 @@ function Home() {
 		}
 	}
   
-	const nextMusica = () => {
+	const next = () => {
 		let id=music;
+		if (!isPlaying){
+			play()	
+		}
 		if (music < list.length -1 ) {
 			setMusic(music+1);
 			id++
@@ -50,10 +53,15 @@ function Home() {
 		}
 		audioPlayer.current.src = `https://assets.breatheco.de/apis/sound/${list[id].url}`
 		audioPlayer.current.play();
+		const element = document.getElementById(id);
+  		element.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 	  }
 	 
-	const anteriorMusica = () => {
+	const prev = () => {
 		let id=music
+		if (!isPlaying){
+			play()	
+		}
 		if (music > 0) {
 			setMusic(music-1);
 			id--
@@ -63,20 +71,22 @@ function Home() {
 		}
 		audioPlayer.current.src = `https://assets.breatheco.de/apis/sound/${list[id].url}`
 		audioPlayer.current.play();
+		const element = document.getElementById(id);
+  		element.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 	}
  
  return (
 	<>
 		<div className="container">
 			<div className="listsongs mx-auto">
-				<ol className="list-group list-group-numbered overflow-auto"> {list.map((item, index) => (
-					<li key={index} value={index} className={"list-group-item p-3 text-start"} onClick={()=>setSong(item.url,index)}>{item.name}</li>
+				<ol className="list-group list-group-numbered overflow-auto">{list.map((item, index) => (
+					<li key={index} id={index} value={index} className={"list-group-item p-3 text-start"+(index===music && isPlaying ? " active" : "")} onClick={()=>setSong(item.url,index)}>{item.name}</li>
 				))}  </ol>
-				<audio  ref={audioPlayer} src="https://assets.breatheco.de/apis/sound/songs" type="audio.mp3"/>
+				<audio  ref={audioPlayer} src="#" type="audio.mp3"/>
 				<div className="controls mx-auto text-center ">
-					<button className="btn" onClick={anteriorMusica}> <BsArrowLeftCircle/> </button>
-					<button className="btn" onClick={changePlaying} > { isPlaying ? <BsPauseCircle/> : <BsPlayCircle/> }	</button>
-					<button className="btn" onClick={nextMusica}> <BsArrowRightCircle/> </button>
+					<button className="btn" onClick={prev}> <BsArrowLeftCircle/> </button>
+					<button className="btn" onClick={play} > { isPlaying ? <BsPauseCircle/> : <BsPlayCircle/> }	</button>
+					<button className="btn" onClick={next}> <BsArrowRightCircle/> </button>
 				</div>
 			</div>
 		</div>
